@@ -1,23 +1,9 @@
 from imports import *
 
-# ==== bring in augmentation functions ====
-from augmentation import (
-    cell_aware_intensity_scale,
-    add_gaussian_noise,
-    contrast_adjustment,
-    histogram_shift,
-    gaussian_sharpening,
-    gaussian_smoothing,
-    zoom_image,
-    rotate_image
-)
-
-
-
 # ========= DATA GENERATOR ==========
 
 class ImageLabelGenerator(Sequence):
-    def __init__(self, image_label_pairs, batch_size=2, target_size=(512, 704), augment=True, shuffle=True, **kwargs):
+    def __init__(self, image_label_pairs, batch_size=2, target_size=(512, 704), augment=False, shuffle=True, **kwargs):
         super().__init__(**kwargs)
         self.image_label_pairs = image_label_pairs
         self.batch_size = batch_size
