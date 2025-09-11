@@ -2,23 +2,34 @@
 
 This repository contains a modular implementation of a SwinUNet architecture for cell segmentation in microscopy images. The code is organized into separate components for clarity and reusability, allowing you to either:
 
-Run them as separate modules and orchestrate training/evaluation from your own main.py, or
+    Run them as separate modules and orchestrate training/evaluation from your own main.py, or
+    
+    Combine everything into a single script for quick experiments.
 
-Combine everything into a single script for quick experiments.
+The project_root/src/ directory contains the main components:
 
-project_root/
-├──src
-    ├── imports.py              # Centralized imports and global configs (paths, libs)
-    ├── dataloader.py           # Dataset utilities (pairing images/labels, generators)
-    ├── augmentation.py         # Different Augmentation techniques(randomly picked in pair of 2-3)
-    ├── model.py                # Refined SwinUNet architecture
-    ├── metrics.py              # Loss functions (BCE + Dice, etc.)
-    ├── callbacks_checks.py     # Custom metrics (Dice, F1, AP, AFNR)
-    ├── test.py                 # Custom training callbacks (checkpoints, COCO eval, etc.)
-    ├── train.py                # Training with k-fold validation method
+    imports.py – Centralized imports and global configurations (paths, libraries).
+    
+    dataloader.py – Dataset utilities for pairing images and labels, and creating generators.
+    
+    augmentation.py – Different augmentation techniques applied randomly (2–3 per image pair).
+    
+    model.py – Refined SwinUNet architecture.
+    
+    metrics.py – Loss functions (e.g., BCE + Dice).
+    
+    callbacks_checks.py – Custom metrics (Dice, F1, AP, AFNR).
+    
+    test.py – Testing and evaluation, including COCO-style metrics.
+    
+    train.py – Training loop with k-fold cross-validation.
 
-├── .gitignore          # Ignore checkpoints, outputs, logs
-└── README.md           # This file
+Other files in the root directory:
+
+    .gitignore – To ignore checkpoints, outputs, and logs.
+    README.md – This documentation file.
+
+
 
 
 ## Configuration
@@ -35,8 +46,7 @@ Modify train_img_dir, train_lbl_dir, test_img_dir, test_lbl_dir in imports.py as
     pip install -r requirements.txt
 
 2. Datasets:
-- Used total of 5 publicaly available datasets.
-- Combined while training: 
+- We combined a total of 5 publicly available datasets for training:
     1. [LIVECell Dataset](https://sartorius-research.github.io/LIVECell/)
     2. [Data Science Bowl 2018](https://bbbc.broadinstitute.org/BBBC038)
     3. [Cellpose](https://www.cellpose.org/)
@@ -45,17 +55,25 @@ Modify train_img_dir, train_lbl_dir, test_img_dir, test_lbl_dir in imports.py as
 
 
 3. Procedure:
-    - imports
-    - data preparation
-    - model definition
-    - metrics adding 
-    - callbacks, logging and checks
-    - training
-    - testing
-    - main(optional)
+    Import modules
 
+    Prepare datasets
+    
+    Define the model
+    
+    Add metrics
+    
+    Set up callbacks, logging, and checks
+    
+    Train the model
+    
+    Test/evaluate the results
+    
+    (Optional) Use main.py to run everything in one go
+   
 ## Notes
 Each module is standalone; you can import functions/classes as needed:
+    
     from data_loader import get_image_label_pairs, ImageLabelGenerator
     from model import swin_unet
 
