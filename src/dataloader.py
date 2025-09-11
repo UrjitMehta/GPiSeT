@@ -17,7 +17,7 @@ from augmentation import (
 # ========= DATA GENERATOR ==========
 
 class ImageLabelGenerator(Sequence):
-    def __init__(self, image_label_pairs, batch_size=2, target_size=(512, 704), augment=False, shuffle=True, **kwargs):
+    def __init__(self, image_label_pairs, batch_size=2, target_size=(512, 704), augment=True, shuffle=True, **kwargs):
         super().__init__(**kwargs)
         self.image_label_pairs = image_label_pairs
         self.batch_size = batch_size
