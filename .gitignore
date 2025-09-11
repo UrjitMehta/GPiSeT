@@ -1,0 +1,83 @@
+# ===================================
+# Python
+# ===================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+*.ipynb
+*.ipynb_convert
+.colab/
+
+# Virtual Environments
+venv/
+.env/
+*.env
+.venv/
+env/
+ENV/
+
+# ===================================
+# ML / Deep Learning Artifacts
+# ===================================
+
+# TensorFlow / Keras
+*.h5
+*.hdf5
+*.keras
+*.pb
+
+# PyTorch (if any)
+*.pt
+*.pth
+
+# Checkpoints & logs
+checkpoints/
+logs/
+*.log
+*.out
+*.err
+
+# TensorBoard
+tb_logs/
+events.out.tfevents.*
+
+# ===================================
+# Project-specific Outputs
+# ===================================
+
+# Training outputs
+# outputs/
+# models/
+# loss_curves/
+# summaries/
+
+# Figures / plots
+*.png
+*.jpg
+*.jpeg
+*.tif
+*.tiff
+*.bmp
+
+# COCO evaluation JSONs
+*.json
+
+# ===================================
+# System / Editor Files
+# ===================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+*.code-workspace
