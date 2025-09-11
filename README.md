@@ -2,9 +2,9 @@
 
 This repository contains a modular implementation of a SwinUNet architecture for cell segmentation in microscopy images. The code is organized into separate components for clarity and reusability, allowing you to either:
 
-    Run them as separate modules and orchestrate training/evaluation from your own main.py, or
+- Run them as separate modules and orchestrate training/evaluation from your own main.py, or
     
-    Combine everything into a single script for quick experiments.
+- Combine everything into a single script for quick experiments.
 
 The project_root/src/ directory contains the main components:
 
