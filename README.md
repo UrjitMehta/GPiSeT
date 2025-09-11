@@ -33,11 +33,11 @@ Other files in the root directory:
 
 
 ## Configuration
-Paths (datasets, outputs, logs, models, etc) are defined in imports.py.
+- Paths (datasets, outputs, logs, models, etc) are defined in imports.py.
 
-Mixed precision (mixed_float16) can be enabled at the top of your training/testing scripts.
+- Mixed precision (mixed_float16) can be enabled at the top of your training/testing scripts.
 
-Modify train_img_dir, train_lbl_dir, test_img_dir, test_lbl_dir in imports.py as needed.
+- Modify train_img_dir, train_lbl_dir, test_img_dir, test_lbl_dir in imports.py as needed.
 
 
 ## Usage
