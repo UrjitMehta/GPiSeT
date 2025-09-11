@@ -25,6 +25,7 @@ from skimage.filters import threshold_otsu
 import tensorflow as tf
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 # ---- Scikit-learn for splits
 from sklearn.model_selection import KFold
@@ -36,9 +37,9 @@ from pycocotools.cocoeval import COCOeval
 
 # ---- Keras Utils
 from tensorflow.keras.utils import Sequence, to_categorical
-import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers, models
+
 
 # ---- Any custom utilities from your project
 # (Uncomment and adjust paths if you keep them in separate .py files)
