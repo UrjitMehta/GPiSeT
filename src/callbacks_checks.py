@@ -1,17 +1,4 @@
-import os
-import json
-import numpy as np
-import matplotlib.pyplot as plt
-
-import tifffile as tiff
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from tensorflow.keras.callbacks import Callback
-import tensorflow as tf
-
-from skimage.measure import label, regionprops
-from pycocotools import mask as maskUtils
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+from imports import *
 
 
 class OutputSanityCheckCallback(tf.keras.callbacks.Callback):

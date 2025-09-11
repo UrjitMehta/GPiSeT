@@ -1,6 +1,4 @@
-import numpy as np
-import cv2
-
+from imports import *
 # ========== AUGMENTATIONS ==========
 
 def zoom_image(img, scale_range=(0.25, 1.5)):
