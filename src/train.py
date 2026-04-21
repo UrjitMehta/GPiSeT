@@ -31,7 +31,7 @@ def pad_histories(histories):
 image_label_pairs = get_image_label_pairs(train_img_dir, train_lbl_dir)
 kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
-total_epochs = 200  # change back to 200 for real run
+total_epochs = 200  
 
 # Storage for metrics
 all_val_losses, all_val_dice_scores = [], []
