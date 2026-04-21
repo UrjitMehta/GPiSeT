@@ -1,4 +1,4 @@
-# Refined Swin-Unet Implementation for Cell Segmentation
+# GPiSeT: Guidance Fused Pixel-level Cell Segmentation Framework with Transformer Backbone
 
 This repository contains a modular implementation of a SwinUNet architecture for cell segmentation in microscopy images. The code is organized into separate components for clarity and reusability, allowing you to either:
 
