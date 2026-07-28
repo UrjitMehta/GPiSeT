@@ -1,16 +1,11 @@
-# ===================================
-# Imports for Test Evaluation
-# ===================================
 from imports import *
 
 from tensorflow.keras import mixed_precision
 mixed_precision.set_global_policy("mixed_float16")
 
-# =============================
-# Test Evaluation with COCO + Visualizations + APbbox/APsegm
-# =============================
-
-# ---- TIFF helper
+# -----------------------------
+# Helper Functions
+# -----------------------------
 def tiff_imread(path):
     arr = tiff.imread(path)
     # (C,H,W) -> (H,W,C) if needed
@@ -18,9 +13,6 @@ def tiff_imread(path):
         arr = np.transpose(arr, (1, 2, 0))
     return arr
 
-# -----------------------------
-# Helper Functions
-# -----------------------------
 def read_image(img_path):
     """Safe image reader for TIFF/PNG/JPG with sane dtype for display."""
     ext = os.path.splitext(img_path)[1].lower()
@@ -127,7 +119,6 @@ def preds_to_coco_json(preds, image_paths, save_path, threshold=0.5, category_id
         H, W = read_image(img_path).shape[:2]
         ph, pw = pred.shape[:2]
 
-        # If shapes differ, resize prediction back to original image size
         if (ph, pw) != (H, W):
             pred = sk_resize(pred, (H, W), order=1, mode="reflect", anti_aliasing=False, preserve_range=True)
             pred = pred.astype(np.float32)
@@ -325,7 +316,7 @@ for subfolder in test_subfolders:
     results = model.evaluate(generator, verbose=0)
     test_results.append(results)
 
-    # Unpack results (make sure order matches model.metrics_names)
+    # Unpack results
     try:
         loss, acc, dice, f1, ap, afnr = results
     except ValueError:
