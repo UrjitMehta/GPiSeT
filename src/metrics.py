@@ -1,6 +1,6 @@
 from imports import *
 
-# ========== LOSS FUNCTIONS ==========
+# ========== LOSS FUNCTIONS & METRICES==========
 
 bce_fn = tf.keras.losses.BinaryCrossentropy(from_logits=False)
 
@@ -22,9 +22,6 @@ def bce_dice_loss(y_true, y_pred):
     y_pred = K.clip(y_pred, 1e-7, 1.0 - 1e-7)
     return bce_fn(y_true, y_pred) + dice_loss(y_true, y_pred)
 
-# ==================================
-# Other Metrics
-# ==================================
 class F1Score(tf.keras.metrics.Metric):
   def __init__(self, name="f1_score", threshold=0.1, **kwargs):
     super().__init__(name=name, **kwargs)
@@ -89,6 +86,4 @@ class AFNR(tf.keras.metrics.Metric):
     for var in self.variables:
       K.set_value(var, 0)
 
-
-# Average Precision 
 ap_metric = tf.keras.metrics.AUC(curve="PR", name="average_precision")
