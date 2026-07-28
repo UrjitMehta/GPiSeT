@@ -190,17 +190,20 @@ def run_coco_eval(gt_json, dt_json, logprint):
         logprint(f"[COCO-{iou_type}] AP: {ap:.4f} | AP50: {ap50:.4f} | AP75: {ap75:.4f}")
     return stats
 
-def save_all_predictions(images, labels, preds, save_path, samples_per_image=2, threshold=0.5):
+def save_all_predictions(images, labels, preds, save_path, samples_per_image=2, threshold=0.5, generate_guiding_map=None):
     os.makedirs(save_path, exist_ok=True)
     total_samples = len(images)
     num_groups = math.ceil(total_samples / samples_per_image)
+
+    # If guidance is present -> one more column
+    num_cols = 6 if generate_guiding_map is not None else 5
 
     for group_idx in range(num_groups):
         start = group_idx * samples_per_image
         end = min(start + samples_per_image, total_samples)
         n = end - start
 
-        fig, axes = plt.subplots(n, 5, figsize=(18, 3 * max(1, n)))
+        fig, axes = plt.subplots(n, num_cols, figsize=(4 * num_cols, 3 * max(1, n)))
         if n == 1:
             axes = axes[np.newaxis, :]
 
@@ -208,7 +211,7 @@ def save_all_predictions(images, labels, preds, save_path, samples_per_image=2, 
             idx = start + i
             img, lbl, pred = images[idx], labels[idx], preds[idx]
 
-            # Normalize for display (avoid black tiles from normalized tensors)
+            # ---------- Normalize original ----------
             if img.dtype != np.uint8:
                 imin, imax = float(img.min()), float(img.max())
                 if imax > imin:
@@ -221,32 +224,46 @@ def save_all_predictions(images, labels, preds, save_path, samples_per_image=2, 
             lbl_disp = np.squeeze(lbl)
             pred_disp = np.squeeze(pred)
 
+            col_offset = 0
+
             # Column 1: Original
-            axes[i, 0].imshow(img_disp)
-            axes[i, 0].set_title("Original")
-            axes[i, 0].axis("off")
+            axes[i, col_offset].imshow(img_disp)
+            axes[i, col_offset].set_title("Original")
+            axes[i, col_offset].axis("off")
+            col_offset += 1
 
-            # Column 2: GT Mask
-            axes[i, 1].imshow(lbl_disp, cmap="gray")
-            axes[i, 1].set_title("GT Mask")
-            axes[i, 1].axis("off")
+            # Column 2:  Guidance
+            if generate_guiding_map is not None:
+                guidance_map = generate_guiding_map(img_disp)
+                axes[i, col_offset].imshow(guidance_map[...,0], cmap="hot")
+                axes[i, col_offset].set_title("Guidance")
+                axes[i, col_offset].axis("off")
+                col_offset += 1
 
-            # Column 3: Prediction
-            axes[i, 2].imshow(pred_disp, cmap="gray")
-            axes[i, 2].set_title("Prediction")
-            axes[i, 2].axis("off")
+            # Column: GT Mask
+            axes[i, col_offset].imshow(lbl_disp, cmap="gray")
+            axes[i, col_offset].set_title("GT Mask")
+            axes[i, col_offset].axis("off")
+            col_offset += 1
 
-            # Column 4: BBox Overlay (prediction contour in red)
-            axes[i, 3].imshow(img_disp)
-            axes[i, 3].contour((pred_disp > threshold).astype(np.uint8), colors="r", linewidths=1)
-            axes[i, 3].set_title("BBox Overlay")
-            axes[i, 3].axis("off")
+            # Column: Prediction
+            axes[i, col_offset].imshow(pred_disp, cmap="gray")
+            axes[i, col_offset].set_title("Prediction")
+            axes[i, col_offset].axis("off")
+            col_offset += 1
 
-            # Column 5: Segm Overlay (GT mask overlay)
-            axes[i, 4].imshow(img_disp, alpha=0.7)
-            axes[i, 4].imshow((lbl_disp > 0.5).astype(np.uint8), cmap="Reds", alpha=0.4)
-            axes[i, 4].set_title("Segm Overlay")
-            axes[i, 4].axis("off")
+            # Column: BBox Overlay
+            axes[i, col_offset].imshow(img_disp)
+            axes[i, col_offset].contour((pred_disp > threshold).astype(np.uint8), colors="r", linewidths=1)
+            axes[i, col_offset].set_title("BBox Overlay")
+            axes[i, col_offset].axis("off")
+            col_offset += 1
+
+            # Column: Segm Overlay (prediction mask overlay)
+            axes[i, col_offset].imshow(img_disp, alpha=0.7)
+            axes[i, col_offset].imshow((pred_disp > threshold).astype(np.uint8), cmap="jet", alpha=0.4)
+            axes[i, col_offset].set_title("Segm Overlay")
+            axes[i, col_offset].axis("off")
 
         plt.tight_layout()
         save_file = os.path.join(save_path, f"outputs_{group_idx + 1:03d}.png")
