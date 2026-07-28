@@ -1,5 +1,5 @@
 from imports import *
-# ========== AUGMENTATIONS ==========
+# ========== GEOMATRIC AUGMENTATIONS ==========
 
 def zoom_image(img, scale_range=(0.25, 1.5)):
     scale = np.random.uniform(*scale_range)
@@ -25,7 +25,7 @@ def rotate_image(img, k=None):
     if k is None:
         k = np.random.choice([1, 2, 3])
     return np.rot90(img, k=k)
-
+# ========== INTENSITY-BASED AUGMENTATIONS ==========
 def cell_aware_intensity_scale(img, scale_range=(1.0, 1.7)):
     return np.clip(img * np.random.uniform(*scale_range), 0, 1)
 
