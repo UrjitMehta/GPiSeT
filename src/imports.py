@@ -1,6 +1,5 @@
 # ===================================
-# Master Imports for SwinUNet Project
-# Save this as imports.py
+# Master Imports for GPiSeT
 # ===================================
 
 # ---- Standard Library
