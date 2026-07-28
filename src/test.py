@@ -309,13 +309,21 @@ for subfolder in test_subfolders:
         continue
 
     pairs = [(img_dict[k], lbl_dict[k]) for k in common_keys]
-    generator = ImageLabelGenerator(pairs, batch_size=2, shuffle=False)
+    # Base image-label generator
+    base_generator = ImageLabelGenerator(
+        pairs, batch_size=2, shuffle=False, augment=False, use_guidance=use_input_guidance, guidance_cnn=guidance_cnn
+    )
+    
+    # Wrapper generator adds the guidance channel
+    generator = base_generator
 
     all_images, all_labels, all_preds = [], [], []
+    
     for idx in range(len(generator)):
-        batch_images, batch_labels = generator[idx]
-        preds = model.predict(batch_images, verbose=0)
-        all_images.extend(batch_images); all_labels.extend(batch_labels); all_preds.extend(preds)
+      batch_images, batch_labels = generator[idx]
+      # Guidance already handled by GuidedGenerator
+      preds = model.predict(batch_images, verbose=0)
+      all_images.extend(batch_images); all_labels.extend(batch_labels); all_preds.extend(preds)
 
     save_subfolder = os.path.join(output_dir, "test_output", f"{subfolder}_output")
     os.makedirs(save_subfolder, exist_ok=True)
@@ -333,7 +341,7 @@ for subfolder in test_subfolders:
     results = model.evaluate(generator, verbose=0)
     test_results.append(results)
 
-    # Unpack results
+    # Unpack results (make sure order matches model.metrics_names)
     try:
         loss, acc, dice, f1, ap, afnr = results
     except ValueError:
@@ -349,17 +357,17 @@ for subfolder in test_subfolders:
              f"AP: {ap:.4f} | "
              f"AFNR: {afnr:.4f}")
 
-    save_all_predictions(np.array(all_images), np.array(all_labels), np.array(all_preds),
-                         save_subfolder, samples_per_image=2, threshold=0.2)
+    save_all_predictions(np.array(all_images)[..., :3], np.array(all_labels), np.array(all_preds), save_subfolder, samples_per_image=2, threshold=0.2, generate_guiding_map=generate_guiding_map)
 
 # -----------------------------
 # Overall Metrics
 # -----------------------------
+metric_names = model.metrics_names
+
 if test_results:
-    all_keys = test_results[0].keys()
     logprint("\n=== Overall Test Metrics ===")
-    for key in all_keys:
-        values = [tr[key] for tr in test_results]
+    for i, key in enumerate(metric_names):
+        values = [tr[i] for tr in test_results]  # access by index
         mean, std = np.mean(values), np.std(values)
         logprint(f"{key}: {mean:.4f} +/- {std:.4f}")
 
