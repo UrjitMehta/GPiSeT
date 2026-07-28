@@ -3,7 +3,7 @@ from imports import *
 from tensorflow.keras import mixed_precision
 mixed_precision.set_global_policy("mixed_float16")
 
-# Utility: dual logger (console + file)
+# Dual logger (console + file)
 def get_logger(log_path):
     log_file = open(log_path, "w")
     def logprint(msg):
@@ -16,11 +16,11 @@ def get_logger(log_path):
 def safe_get(history, key):
     if key in history.history:
         return history.history[key]
-    # fallback length: prefer val_loss length if available
+
     fallback_len = len(history.history.get('loss', []))
     return [np.nan] * fallback_len
 
-# pad list-of-lists to equal length (with np.nan)
+
 def pad_histories(histories):
     max_len = max(len(h) for h in histories)
     return np.array([np.pad(h, (0, max_len - len(h)), constant_values=np.nan) for h in histories])
@@ -43,7 +43,7 @@ all_train_f1, all_val_f1 = [], []
 all_train_ap, all_val_ap = [], []
 all_train_afnr, all_val_afnr = [], []
 
-# COCO-related metrics (use nan defaults)
+# COCO-related metrics
 all_coco_bbox_ap = []
 all_coco_bbox_ap50 = []
 all_coco_bbox_ap75 = []
@@ -180,7 +180,6 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(image_label_pairs)):
     # Collect COCO metrics from callback (use last_logs if present)
     # ---------------------------
     logs = getattr(coco_eval_callback, "last_logs", {}) or {}
-    # use np.nan default so averaging ignores missing runs
     all_coco_bbox_ap.append(logs.get("coco_bbox_ap", np.nan))
     all_coco_bbox_ap50.append(logs.get("coco_bbox_ap50", np.nan))
     all_coco_bbox_ap75.append(logs.get("coco_bbox_ap75", np.nan))
@@ -209,7 +208,7 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(image_label_pairs)):
         plt.ylabel(title)
         plt.legend()
 
-    # Optional: if the callback tracked per-eval-step APs in epoch_logs, plot them
+
     if hasattr(coco_eval_callback, "epoch_logs") and coco_eval_callback.epoch_logs:
         if "AP_bbox" in coco_eval_callback.epoch_logs and "AP_segm" in coco_eval_callback.epoch_logs:
             plt.subplot(2, 3, 6)
