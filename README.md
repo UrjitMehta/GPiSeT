@@ -76,6 +76,8 @@ generation script and paths can be adapted accordingly.
     Import modules
 
     Prepare datasets
+
+    Prepare Guidance Maps
     
     Define the model
     
