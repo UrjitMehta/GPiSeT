@@ -18,6 +18,12 @@ The project_root/src/ directory contains the main components:
     
     metrics.py – Loss functions (e.g., BCE + Dice).
     
+    guidance_generation/ – Scripts for generating guidance maps using either:
+        heuristic.py – Heuristic-based guidance generation.
+        mini_cnn.py – CNN-derived guidance generation. The core data loading
+                      and training pipeline is currently configured for
+                      Mini-CNN-generated guidance maps.
+    
     callbacks_checks.py – Custom metrics (Dice, F1, AP, AFNR).
     
     test.py – Testing and evaluation, including COCO-style metrics.
@@ -39,6 +45,19 @@ Other files in the root directory:
 
 - Modify train_img_dir, train_lbl_dir, test_img_dir, test_lbl_dir in imports.py as needed.
 
+## Guidance Generation
+
+The framework supports two approaches for generating guidance maps, implemented
+in the `guidance_generation/` directory:
+
+- `heuristic.py` – Generates guidance maps using a heuristic-based approach.
+- `mini_cnn.py` – Learns and generates guidance maps using a lightweight CNN-based approach.
+
+Either approach can be used to generate the guidance maps required by the
+guidance-fused SwinUNet framework. The core data loading and training pipeline
+is currently configured for guidance maps generated using `mini_cnn.py`.
+If the heuristic-based approach is preferred, the corresponding guidance
+generation script and paths can be adapted accordingly.
 
 ## Usage
 
