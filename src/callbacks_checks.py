@@ -51,30 +51,35 @@ class EpochCheckpoint(Callback):
 # Callback to Save Predictions after Each Epoch
 # ===============================
 class SavePredictionsCallback(tf.keras.callbacks.Callback):
-    def __init__(self, generator, save_path, num_sets=4, threshold=0.5):
+    def __init__(self, generator, save_path, num_sets=4, threshold=0.5, generate_guiding_map=None):
         super().__init__()
         self.generator = generator
         self.save_path = save_path
         self.num_sets = num_sets
         self.num_batches = len(generator)
-        self.threshold = threshold  # For binarizing predictions
+        self.threshold = threshold
+        self.generate_guiding_map = generate_guiding_map  # Optional function
 
     def on_epoch_end(self, epoch, logs=None):
         import random
         from PIL import UnidentifiedImageError
+        from skimage.measure import label, regionprops
 
         os.makedirs(self.save_path, exist_ok=True)
 
-        # Random batch
+        # Pick a random batch
         batch_index = random.randint(0, self.num_batches - 1)
         images, labels = self.generator[batch_index]
         predictions = self.model.predict(images)
 
-        # Guard if batch smaller than requested
         num_samples_to_plot = min(self.num_sets, len(images))
 
-        # 5 columns: Original | Label | Pred | BBox | Segm Overlay
-        fig, axes = plt.subplots(num_samples_to_plot, 5, figsize=(20, 4 * num_samples_to_plot))
+        # Original | Guidance | Label | Pred | BBox | Overlay
+        num_cols = 5 + (1 if self.generate_guiding_map is not None else 0)
+        fig, axes = plt.subplots(num_samples_to_plot, num_cols, figsize=(4*num_cols, 4*num_samples_to_plot))
+
+        if num_samples_to_plot == 1:
+            axes = axes[np.newaxis, :]  
 
         for i in range(num_samples_to_plot):
             absolute_idx = batch_index * self.generator.batch_size + i
@@ -83,68 +88,77 @@ class SavePredictionsCallback(tf.keras.callbacks.Callback):
             img_idx = self.generator.indexes[absolute_idx]
             img_path = self.generator.image_filenames[img_idx]
 
-            # ---------- Load Original ----------
+            # ---------- Original ----------
             try:
                 if not os.path.exists(img_path):
                     continue
-
                 ext = os.path.splitext(img_path)[-1].lower()
                 if ext in ['.tif', '.tiff']:
                     original_img = tiff.imread(img_path)
                     if original_img.ndim == 2:
                         original_img = np.stack([original_img]*3, axis=-1)
                     elif original_img.ndim == 3:
-                        if original_img.shape[0] in [1, 2, 3]:
-                            original_img = np.transpose(original_img, (1, 2, 0))
+                        if original_img.shape[0] in [1,2,3]:
+                            original_img = np.transpose(original_img, (1,2,0))
                         if original_img.shape[-1] > 3:
-                            original_img = original_img[:, :, :3]
+                            original_img = original_img[:,:,:3]
                     original_img = original_img.astype(np.uint8)
                 else:
                     original_img = load_img(img_path, target_size=self.generator.target_size)
                     original_img = img_to_array(original_img).astype(np.uint8)
-
                 original_img_norm = original_img / 255.0
 
                 axes[i, 0].imshow(original_img_norm)
                 axes[i, 0].set_title("Original")
                 axes[i, 0].axis('off')
-
             except (UnidentifiedImageError, OSError, ValueError):
                 axes[i, 0].axis('off')
                 axes[i, 0].set_title("Original (Error)")
                 continue
 
+            col_offset = 1
+
+            # ---------- Guidance ----------
+            if self.generate_guiding_map is not None:
+                guidance_map = self.generate_guiding_map(original_img)
+                axes[i, col_offset].imshow(guidance_map[...,0], cmap='hot')
+                axes[i, col_offset].set_title("Guidance")
+                axes[i, col_offset].axis('off')
+                col_offset += 1
+
             # ---------- Label ----------
-            axes[i, 1].imshow(labels[i].squeeze(), cmap='gray')
-            axes[i, 1].set_title("Label")
-            axes[i, 1].axis('off')
+            axes[i, col_offset].imshow(labels[i].squeeze(), cmap='gray')
+            axes[i, col_offset].set_title("Label")
+            axes[i, col_offset].axis('off')
+            col_offset += 1
 
             # ---------- Prediction ----------
             pred_mask = predictions[i].squeeze()
-            axes[i, 2].imshow(pred_mask, cmap='gray')
-            axes[i, 2].set_title("Prediction")
-            axes[i, 2].axis('off')
+            axes[i, col_offset].imshow(pred_mask, cmap='gray')
+            axes[i, col_offset].set_title("Prediction")
+            axes[i, col_offset].axis('off')
+            col_offset += 1
 
             # ---------- Bounding Boxes ----------
             pred_bin = (pred_mask > self.threshold).astype(np.uint8)
             labeled = label(pred_bin)
-            axes[i, 3].imshow(original_img_norm)
+            axes[i, col_offset].imshow(original_img_norm)
             for region in regionprops(labeled):
                 y1, x1, y2, x2 = region.bbox
-                rect = plt.Rectangle((x1, y1), x2 - x1, y2 - y1,
-                                     edgecolor='red', facecolor='none', linewidth=2)
-                axes[i, 3].add_patch(rect)
-            axes[i, 3].set_title("Bounding Box")
-            axes[i, 3].axis('off')
+                rect = plt.Rectangle((x1,y1), x2-x1, y2-y1, edgecolor='red', facecolor='none', linewidth=2)
+                axes[i, col_offset].add_patch(rect)
+            axes[i, col_offset].set_title("Bounding Box")
+            axes[i, col_offset].axis('off')
+            col_offset += 1
 
-            # ---------- Segmentation Overlay ----------
-            axes[i, 4].imshow(original_img_norm)
-            axes[i, 4].imshow(pred_bin, cmap='jet', alpha=0.4)  # Overlay
-            axes[i, 4].set_title("Segmentation Overlay")
-            axes[i, 4].axis('off')
+            # ---------- Overlay ----------
+            axes[i, col_offset].imshow(original_img_norm)
+            axes[i, col_offset].imshow(pred_bin, cmap='jet', alpha=0.4)
+            axes[i, col_offset].set_title("Segmentation Overlay")
+            axes[i, col_offset].axis('off')
 
         plt.tight_layout()
-        save_file = os.path.join(self.save_path, f'epoch_{epoch + 1:03d}.png')
+        save_file = os.path.join(self.save_path, f'epoch_{epoch+1:03d}.png')
         plt.savefig(save_file)
         plt.close()
 
