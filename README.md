@@ -67,9 +67,9 @@ generation script and paths can be adapted accordingly.
 
 2. Pretrained Model:
 
-A pretrained version of the proposed GPiSeT models are available on Hugging Face. The pretrained models were selected from the 5-fold cross-validation experiments based on the best validation Dice score.
+- A pretrained version of the proposed GPiSeT models are available on Hugging Face. The pretrained models were selected from the 5-fold cross-validation experiments based on the best      validation Dice score.
 
-You can use the pretrained models in either of the following ways:
+- You can use the pretrained models in either of the following ways:
 
 - **Download using the provided script:**
 
