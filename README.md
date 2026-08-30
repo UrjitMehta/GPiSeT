@@ -34,6 +34,7 @@ Other files in the root directory:
 
     .gitignore – To ignore checkpoints, outputs, and logs.
     README.md – This documentation file.
+    download_model.py – Downloads the pretrained GPiSeT model from Hugging Face.
 
 
 
@@ -64,15 +65,37 @@ generation script and paths can be adapted accordingly.
 1. Install dependencies:
     pip install -r requirements.txt
 
-2. Datasets:
+2. Pretrained Model:
+
+A pretrained version of the proposed GPiSeT models are available on Hugging Face. The pretrained models were selected from the 5-fold cross-validation experiments based on the best validation Dice score.
+
+You can use the pretrained models in either of the following ways:
+
+- **Download using the provided script:**
+
+    ```bash
+    python download_model.py
+    ```
+
+    This will automatically download the pretrained `GPiSeT-*.keras` and make it available locally for testing or inference on your own dataset.
+
+- **Download directly from Hugging Face:**
+
+    The pretrained `GPiSeT-*.keras` can also be downloaded directly from the [Hugging Face Model Repository](https://huggingface.co/urjit006/GPiSeT) and used according to your requirements.
+
+- **Fine-tune from the GPiSeT architecture:**
+
+    The GPiSeT architecture can also be initialized from `model.py` and fine-tuned or trained on a custom dataset. Configure the required dataset and output paths in `imports.py` before training.
+
+3. Datasets:
 - We combined a total of 5 publicly available datasets for training:
     1. [LIVECell Dataset](https://sartorius-research.github.io/LIVECell/)
     2. [Data Science Bowl 2018](https://bbbc.broadinstitute.org/BBBC038)
     3. [Cellpose](https://www.cellpose.org/)
-    4. [NeurIPS 2022 Cell Segmentation Challenge dataset](https://neurips22-cellseg.grand-challenge.org/dataset/)
+    4. [NeurIPS 2022 Cell Segmentation Challenge dataset] (https://neurips22-cellseg.grand-challenge.org/dataset/)
 
 
-3. Procedure:
+4. Procedure:
     Import modules
 
     Prepare datasets
