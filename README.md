@@ -92,7 +92,7 @@ generation script and paths can be adapted accordingly.
     1. [LIVECell Dataset](https://sartorius-research.github.io/LIVECell/)
     2. [Data Science Bowl 2018](https://bbbc.broadinstitute.org/BBBC038)
     3. [Cellpose](https://www.cellpose.org/)
-    4. [NeurIPS 2022 Cell Segmentation Challenge dataset] (https://neurips22-cellseg.grand-challenge.org/dataset/)
+    4. [NeurIPS 2022 Cell Segmentation Challenge dataset](https://neurips22-cellseg.grand-challenge.org/dataset/)
 
 
 4. Procedure:
