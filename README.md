@@ -34,7 +34,7 @@ Other files in the root directory:
 
     .gitignore – To ignore checkpoints, outputs, and logs.
     README.md – This documentation file.
-    download_model.py – Downloads the pretrained GPiSeT model from Hugging Face.
+    download_model.py – Download the pretrained GPiSeT models from Hugging Face.
 
 
 
