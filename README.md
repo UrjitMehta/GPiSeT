@@ -56,7 +56,11 @@ The framework supports two approaches for generating guidance maps, implemented
 in the `guidance_generation/` directory:
 
 - `heuristic.py` – Generates guidance maps using a heuristic-based approach.
+  Heuristic-based Guidance Map Generation Pipeline:
+  <img width="5423" height="1096" alt="HEU-pipeline_colored" src="https://github.com/user-attachments/assets/affde5d4-219c-4da7-b4f3-5bc9f718ca76" />
+
 - `mini_cnn.py` – Learns and generates guidance maps using a lightweight U-Net-Styled CNN-based approach.
+  <img width="5655" height="3546" alt="CNN-pipeline_colored" src="https://github.com/user-attachments/assets/a931f1ae-fd12-4483-a2bc-89e105b2a6c2" />
 
 Either approach can be used to generate the guidance maps required by the
 guidance-fused SwinUNet framework. The core data loading and training pipeline
