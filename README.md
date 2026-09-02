@@ -1,5 +1,9 @@
 # GPiSeT: Guidance Fused Pixel-level Cell Segmentation Framework with Transformer Backbone
 
+The Overall Architecture:
+<img width="4992" height="5025" alt="generic_whole_arch" src="https://github.com/user-attachments/assets/855e662a-8a15-4baf-9d92-73b32c3c71f8" />
+
+
 This repository contains a modular implementation of a guidance fused SwinUNet architecture for cell segmentation in microscopy images. The code is organized into separate components for clarity and reusability, allowing you to either:
 
 - Run them as separate modules and orchestrate training/evaluation from your own main.py, or
