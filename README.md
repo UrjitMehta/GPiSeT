@@ -140,18 +140,19 @@ If you use this repository or find the work helpful, please cite the paper:
 
 ```bibtex
 @inproceedings{um2026gpiset,
-  title={GPiSeT: Guidance Fused Pixel-level Cell Segmentation Framework with Transformer Backbone},
-  author={Mehta, Urjit and Bhalodiya, Jayendra M.},
-  booktitle={International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)},
-  year={2026}
+  title={GPiSeT: Guidance Fused Pixel-Level Cell Segmentation Framework with Transformer Backbone},
+  author={Urjit Mehta and Jayendra Bhalodiya},
+  booktitle={The 48th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), 26-30 July 2026, Toronto, Canada (2026)},
+  year={2026},
+  url={https://github.com/UrjitMehta/GPiSeT}
 }
 ```
 
 If you use the model in your work, please cite the repo:
 ```bibtex
 @misc{gpiset_model,
-	author       = { Urjit Mehta and Jayendra M. Bhalodiya },
-	title        = { GPiSeT (Revision ca92d40) },
+	author       = { Urjit Mehta and Jayendra Bhalodiya },
+	title        = { GPiSeT},
 	year         = 2026,
 	url          = { https://huggingface.co/urjit006/GPiSeT },
 	doi          = { 10.57967/hf/10499 },
