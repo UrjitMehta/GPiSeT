@@ -149,7 +149,7 @@ If you use this repository or find the work helpful, please cite the paper:
 
 If you use the model in your work, please cite the repo:
 ```bibtex
-@misc{urjit_mehta_2026,
+@misc{gpiset_model,
 	author       = { Urjit Mehta and Jayendra M. Bhalodiya },
 	title        = { GPiSeT (Revision ca92d40) },
 	year         = 2026,
