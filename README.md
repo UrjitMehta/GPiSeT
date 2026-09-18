@@ -134,6 +134,10 @@ Each module is standalone; you can import functions/classes as needed:
 If you prefer, you can create a main.py to link training and evaluation in one run.
 Outputs (logs, curves, models, COCO JSONs, result images) are saved under outputs/, models/, summaries/, etc.
 
+## Citation
+
+If you use this repository or find the work helpful, please cite the paper:
+
 ```bibtex
 @inproceedings{um2026gpiset,
   title={GPiSeT: Guidance Fused Pixel-level Cell Segmentation Framework with Transformer Backbone},
