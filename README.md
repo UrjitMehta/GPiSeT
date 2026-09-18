@@ -146,3 +146,15 @@ If you use this repository or find the work helpful, please cite the paper:
   year={2026}
 }
 ```
+
+If you use the model in your work, please cite the repo:
+```bibtex
+@misc{urjit_mehta_2026,
+	author       = { Urjit Mehta and Jayendra M. Bhalodiya },
+	title        = { GPiSeT (Revision ca92d40) },
+	year         = 2026,
+	url          = { https://huggingface.co/urjit006/GPiSeT },
+	doi          = { 10.57967/hf/10499 },
+	publisher    = { Hugging Face }
+}
+```
