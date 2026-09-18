@@ -133,3 +133,12 @@ Each module is standalone; you can import functions/classes as needed:
 
 If you prefer, you can create a main.py to link training and evaluation in one run.
 Outputs (logs, curves, models, COCO JSONs, result images) are saved under outputs/, models/, summaries/, etc.
+
+```bibtex
+@inproceedings{um2026gpiset,
+  title={GPiSeT: Guidance Fused Pixel-level Cell Segmentation Framework with Transformer Backbone},
+  author={Mehta, Urjit and Bhalodiya, Jayendra M.},
+  booktitle={International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)},
+  year={2026}
+}
+```
