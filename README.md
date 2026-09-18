@@ -141,7 +141,7 @@ If you use this repository or find the work helpful, please cite the paper:
 ```bibtex
 @inproceedings{um2026gpiset,
   title={GPiSeT: Guidance Fused Pixel-Level Cell Segmentation Framework with Transformer Backbone},
-  author={Urjit Mehta and Jayendra Bhalodiya},
+  author={Mehta, Urjit and Bhalodiya, Jayendra},
   booktitle={48th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)},
   year={2026},
   url={https://github.com/UrjitMehta/GPiSeT}
@@ -151,7 +151,7 @@ If you use this repository or find the work helpful, please cite the paper:
 If you use the model in your work, please cite the repo:
 ```bibtex
 @misc{gpiset_model,
-	author       = { Urjit Mehta and Jayendra Bhalodiya },
+	author       = {Mehta, Urjit and Bhalodiya, Jayendra},
 	title        = { GPiSeT},
 	year         = 2026,
 	url          = { https://huggingface.co/urjit006/GPiSeT },
